@@ -43,7 +43,11 @@ body {
   justify-content: flex-start;
   align-items: center;
   padding: 2px;
-  width: 600px;
+  width: 20%;
+}
+
+.sidebar-decklist{
+
 }
 
 .content{
@@ -53,6 +57,7 @@ body {
   grid-template-rows: 2fr 1fr 1fr;
   grid-gap: 5px;
   padding: 5px 25px;
+  width: 80%;
 }
 
 .flashcard {
