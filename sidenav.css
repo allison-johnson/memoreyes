@@ -1,4 +1,4 @@
-sidenav {
+.sidenav {
   width: 40%;
   padding: 15px;
   transition: all 0.5s ease;
@@ -9,11 +9,27 @@ sidenav {
   border-left: 1px solid black;
 }
 
-.hide {
+.sidenav-hide {
   padding: 0;
-width: 0px;
-margin:0;
-border: none;
-transition: all 0.5s ease;
-overflow-x: hidden;
+  width: 0px;
+  margin:0;
+  border: none;
+  transition: all 0.5s ease;
+  overflow-x: hidden;
+}
+
+.menu-icon {
+
+}
+
+.menu-icon {
+  font-size: 30px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  margin: 20px;
+}
+
+.menu-icon:hover{
+  transform: scale(1.5);
+  transition: all 0.1s ease;
 }

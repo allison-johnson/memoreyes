@@ -1,11 +1,13 @@
-function sideNavToggle(){
+function sideNavToggle(nav){
+  console.log(nav);
   console.log("Menu is toggled");
-  let widthIsZero = getComputedStyle(stats).width === "0px";
+  console.log(getComputedStyle(nav).width);
+  let widthIsZero = getComputedStyle(nav).width === "0px";
   console.log(widthIsZero);
   if(widthIsZero){
-    stats.classList.remove("sidenav-hide");
+    nav.classList.remove("sidenav-hide");
 
   }else{
-    stats.classList.add("sidenav-hide");
+    nav.classList.add("sidenav-hide");
   }
 }

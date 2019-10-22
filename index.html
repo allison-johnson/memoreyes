@@ -1,16 +1,45 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="sidenav.css">
     <link rel="stylesheet" href="main.css">
     <meta charset="utf-8">
     <title></title>
   </head>
-  <body class="flex-row">
-    <main>
+  <body class="body-flex-row">
+    <aside id="nav" class="sidenav sidenav-flex-column sidenav-hide">
+      <h1>Sidenav</h1>
+      <div id="flashcard-decks">
+        <h5>Flash Card Deck 1</h5>
+        <hr>
+      </div>
+    </aside>
+    <div class="main-flex-column">
+      <header>
+        <i class="material-icons menu-icon">menu</i>
+        <h2>Memoreyes</h2>
+      </header>
+      <main class="content-flex-row">
+        <div class="content-sidebar">
+          <h5>cards left</h5>
 
-    </main>
-    <sidenav></sidenav>
+        </div>
+        <div class="content">
+          <div class="flashcard" id="flashcard">
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+          </div>
+          <button class="flashcard-flip" type="button" name="button">Flip Card
+          </button>
+        </div>
+      </main>
+      <footer>
+        <h6>footer</h6>
+      </footer>
+    </div>
+
+
     <script src="sidenav.js" charset="utf-8"></script>
     <script src="main.js" charset="utf-8"></script>
   </body>
