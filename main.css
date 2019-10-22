@@ -34,9 +34,11 @@ body {
   align-items: stretch;
   width: 100%;
   text-align:center;
+  flex-wrap: wrap;
 
 }
 .content-sidebar {
+  min-width: 135px;
   border: 1px black solid;
   display: flex;
   flex-direction: column;
@@ -46,8 +48,29 @@ body {
   width: 20%;
 }
 
+.sidebar-hide {
+  padding: 0;
+  width: 0px;
+  margin:0;
+  border: none;
+  transition: all 0.5s ease;
+  overflow-x: hidden;
+}
+
+
 .sidebar-decklist{
 
+}
+
+.sidebar-deck-title{
+  transition: all 0.5s ease;
+  color: black;
+}
+.sidebar-deck-title:hover{
+  cursor: pointer;
+  transform: scale(1.5);
+  text-shadow: 2px 4px rgba(0,0,0,0.3);
+  transition: all 0.5s ease;
 }
 
 .content{
