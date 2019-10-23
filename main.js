@@ -1,19 +1,12 @@
 // Variable Declarations
 
-let menu = document.querySelector(".menu-icon");
-let sidenav = document.querySelector("#nav");
-let domDecks = document.querySelector("#flashcard-decks");
-let domFlashcard = document.querySelector("#flashcard");
-let domContent = document.querySelector(".content");
-let sidebar = document.querySelector(".content-sidebar");
+
 
 
 
 
 // Event Listener Declarations
 
-
-menu.addEventListener("click", toggleSidenav);
 
 
 
@@ -24,23 +17,38 @@ class Flashcard {
     this.front = front;
     this.back = back;
     this.passed = false;
-    this.ele = document.createElement("div");
-    this.ele.setAttribute("id","flashcard");
-    this.ele.classList.add("flashcard");
-    this.domFront = document.createElement("h1");
-    this.domFront.innerText = this.front;
-    this.domBack = document.createElement("h1");
-    this.domBack.innerText = this.back;
   }
   getFrontHTML(){
-    let ele = this.ele.cloneNode(true);
-    ele.appendChild(this.domFront.cloneNode(true));
-    return ele;
+
   }
   getBackHTML(){
-    let ele = this.ele.cloneNode(true);
-    ele.appendChild(this.domBack.cloneNode(true));
-    return ele;
+
+  }
+  getHTML(){
+    let div = document.createElement("div");
+    div.classList.add("flashcard-inner");
+
+    this.frontEle = document.createElement("div");
+    this.backEle = document.createElement("div");
+    this.frontEle.classList.add("flashcard-front");
+    this.backEle.classList.add("flashcard-back");
+    this.frontEle.classList.add("center-element");
+    this.backEle.classList.add("center-element");
+
+    this.frontText = document.createElement("h1");
+    this.frontText.classList.add("center-element");
+    this.frontText.innerText = this.front;
+    this.frontEle.appendChild(this.frontText);
+
+    this.backText = document.createElement("h1");
+    this.backText.classList.add("center-element");
+    this.backText.innerText = this.back;
+    this.backEle.appendChild(this.backText);
+
+    div.appendChild(this.frontEle);
+    div.appendChild(this.backEle);
+    this.ele = div;
+    return this.ele;
   }
 }
 
@@ -59,7 +67,9 @@ class Deck {
     this.unreviewedCards = [];
     this.passedCards = [];
     this.failedCards = [];
+    return this;
   }
+
   randomize(arrayName){
     let shuffledDeck = [];
     let arr = Array.from(this[arrayName]);
@@ -71,7 +81,17 @@ class Deck {
       shuffledDeck.push(shuffledCard);
     }
     this[arrayName] = shuffledDeck;
+    return this;
   }
+
+  createRandomCards(count){
+    for(let i = 0; i < count; i++){
+      let card = new Flashcard(i+": Is it true","yes");
+      this.unreviewedCards.push(card);
+    }
+    return this;
+  }
+
   resetDecks(){
     this.unreviewedCards.push(... this.passedCards);
     this.unreviewedCards.push(... this.failedCards);
@@ -79,6 +99,7 @@ class Deck {
     this.failedCards = [];
     this.randomize('unreviewedCards');
   }
+
   moveCardFromUnreviewToPassed(index){
     let unreviewedIsNotEmpty = this.unreviewedCards.length > 0;
     if(unreviewedIsNotEmpty){
@@ -88,6 +109,7 @@ class Deck {
     }
 
   }
+
   moveCardFromUnreviewToFailed(index){
     let unreviewedIsNotEmpty = this.unreviewedCards.length > 0;
     if(unreviewedIsNotEmpty){
@@ -97,6 +119,7 @@ class Deck {
     }
 
   }
+
   moveCardFromFailedToPassed(index){
     let failedIsNotEmpty = this.failedCards.length > 0;
     if(failedIsNotEmpty){
@@ -106,6 +129,7 @@ class Deck {
     }
 
   }
+
   moveCardFromFailedToFailed(index){
     let failedIsNotEmpty = this.failedCards.length > 0;
     if(failedIsNotEmpty){
@@ -130,20 +154,38 @@ class Memoreyes {
     this.selectedCardFace = null;
 
     // Dom Elements
-    this.flipButton = document.querySelector(".flashcard-flip");
+    this.flipButton = document.querySelector(".flashcard-flip-button");
     this.menu = document.querySelector(".menu-icon");
-    this.domDecks = document.querySelector("#flashcard-decks");
-    this.domFlashcard = document.querySelector("#flashcard");
     this.domContent = document.querySelector(".content");
     this.sidebar = document.querySelector(".content-sidebar");
     this.knowButton = document.querySelector(".flashcard-know")
     this.dontKnowButton = document.querySelector(".flashcard-dont-know");
+    this.sidenav = document.querySelector("#nav");
 
     //Add Event Listeners
-    this.menu.addEventListener("click", toggleSidenav);
+    this.menu.addEventListener("click", this.toggleSidenav.bind(this));
+
     this.flipButton.addEventListener("click", this.domFlipCard.bind(this));
     this.knowButton.addEventListener("click", this.knowClick.bind(this));
     this.dontKnowButton.addEventListener("click", this.dontKnowClick.bind(this));
+  }
+
+  toggleSidenav(){
+    console.log(this.sidenav);
+    sideNavToggle(this.sidenav, "sidenav-hide")
+  }
+
+  toggleSidebar(){
+    sideNavToggle(this.sidebar, "sidebar-hide");
+  }
+
+  // This code is for initial Testing, and is likely to change
+  deleteChildren(e) {
+      var child = e.lastElementChild;
+      while (child!==null) {
+          e.removeChild(child);
+          child = e.lastElementChild;
+      }
   }
 
   addDeck(deck){
@@ -155,17 +197,15 @@ class Memoreyes {
     console.log("Deck Selected", index);
     let noSelectedDeck = this.selectedDeck === null;
     if(noSelectedDeck){
-      console.log("Gonna Switcxh!");
       this.selectedDeck = index;
       this.initializeSelectedDeck();
     }else{
 
       if(index===this.selectedDeck){
-        console.log("Do Nothing");
       }else{
         let switchDecks = confirm("Do you want to switch Decks?");
         if(switchDecks){
-            console.log("Gonna Switcxh!");
+
             this.selectedDeck = index;
             this.initializeSelectedDeck();
         }
@@ -174,23 +214,13 @@ class Memoreyes {
 
   }
 
-  updateVariables(){
-    this.flipButton = document.querySelector(".flashcard-flip");
-    this.menu = document.querySelector(".menu-icon");
-    this.domDecks = document.querySelector("#flashcard-decks");
-    this.domFlashcard = document.querySelector("#flashcard");
-    this.domContent = document.querySelector(".content");
-    this.sidebar = document.querySelector(".content-sidebar");
-  }
-
   initializeSelectedDeck(){
     this.determineCurrentDeck();
     this.domPopulateSidebar();
-    this.domPopulateContent(0);
+    this.domPopulateContent();
   }
 
   determineCurrentDeck(){
-    console.log(this.decks[this.selectedDeck]);
     let unreviewedIsEmpty = this.decks[this.selectedDeck].unreviewedCards.length === 0;
     let failedIsEmpty = this.decks[this.selectedDeck].failedCards.length === 0;
     if(!unreviewedIsEmpty){
@@ -201,8 +231,6 @@ class Memoreyes {
       return this.selectedDeckType;
     }else {
       console.log("You have no cards to review");
-      //this.selectedDeckType = "passedCards";
-      //return this.selectedDeckType;
     }
   }
 
@@ -218,20 +246,16 @@ class Memoreyes {
   }
 
   domFlipCard(){
-    domContent = document.querySelector(".content");
-    let domFlashcard = document.querySelector("#flashcard");
-    domContent.removeChild(domFlashcard);
     let frontDisplayed = this.selectedCardFace === "front";
+    let inner = document.querySelector(".flashcard-inner");
     if(frontDisplayed){
-      domContent.prepend(this.currentFlashcardBack);
+      inner.classList.toggle("flipped-card-inner");
       this.selectedCardFace = "back";
     }else{
-      console.log(this.currentFlashcardFront);
-      domContent.prepend(this.currentFlashcardFront);
+      inner.classList.toggle("flipped-card-inner");
       this.selectedCardFace = "front";
     }
   }
-
 
   dontKnowClick(){
     let index = this.selectedCardIndex;
@@ -271,17 +295,15 @@ class Memoreyes {
     this.domPopulateSidebar();
     let moreCardsInDeck = this.decks[this.selectedDeck][this.selectedDeckType].length > 0;
     if(moreCardsInDeck){
-      let index = this.selectedCardIndex + 1;
-      this.domPopulateContent(index);
+      this.domPopulateContent();
     }else {
       console.log("The Deck is Empty!");
     }
   }
 
-
   domPopulateDecksInNavBar(){
     let deckList = document.querySelector('#flashcard-decks');
-    deleteChildren(deckList);
+    this.deleteChildren(deckList);
     deckList.classList.add("sidebar-decklist");
     this.decks.forEach((deck,index) =>{
       let ele = document.createElement("h2");
@@ -299,7 +321,7 @@ class Memoreyes {
 
   domPopulateSidebar(){
     //gets the title of the selected deck
-    deleteChildren(this.sidebar);
+    this.deleteChildren(this.sidebar);
     let deck = this.decks[this.selectedDeck];
     let unreview = document.createElement("h4");
     let passed = document.createElement("h4");
@@ -308,33 +330,36 @@ class Memoreyes {
     unreview.innerText = `Unreviewed: ${deck.unreviewedCards.length}`;
     passed.innerText = `Passed: ${deck.passedCards.length}`;
     failed.innerText = `Failed: ${deck.failedCards.length}`;
-    sidebar.appendChild(unreview);
-    sidebar.appendChild(passed);
-    sidebar.appendChild(failed);
+    this.sidebar.appendChild(unreview);
+    this.sidebar.appendChild(passed);
+    this.sidebar.appendChild(failed);
 
   }
 
-  domPopulateContent(index, showFront=true){
+  domPopulateContent(showFront=true){
     console.log("Updating Card");
     //this.selectedCardIndex = index;
     let deck = this.getCurrentDeck();
     let flashcard = document.querySelector("#flashcard");
-    let domContent = document.querySelector(".content");
+    this.domContent = document.querySelector(".content");
     let deckIsEmpty = deck.length === 0;
     console.log(deck.length);
     if(!deckIsEmpty){
-      domContent.removeChild(flashcard);
-      this.currentFlashcardFront = deck[0].getFrontHTML();
-      this.currentFlashcardBack = deck[0].getBackHTML();
+      this.deleteChildren(flashcard);
+      this.domCard = deck[0].getHTML();
+      let flashcardEle = document.querySelector("#flashcard");
+      this.deleteChildren(flashcardEle);
+      flashcardEle.appendChild(this.domCard);
 
-      this.domContent.prepend(this.currentFlashcardFront);
-      this.selectedCardFace = "front";
+      if(showFront){
+        //card.querySelector(".flashcard-front")
+      }
+
     }else{
-      console.log("The Deck is Empty, switch to a deck that isn't");
+      alert("You have completed everything!");
     }
 
   }
-
 
   initializePage(){
     this.domPopulateDecksInNavBar();
@@ -344,33 +369,7 @@ class Memoreyes {
 
 // Function Declarations
 
-function toggleSidenav(){
-  sideNavToggle(sidenav, "sidenav-hide")
-}
 
-function toggleSidebar(){
-  sideNavToggle(sidebar, "sidebar-hide");
-}
-
-
-
-function createRandomCards(count, cards){
-  for(let i = 0; i < count; i++){
-    let card = new Flashcard(i+": Is it true","yes");
-    cards.unreviewedCards.push(card);
-  }
-  return cards;
-}
-// This code is for initial Testing, and is likely to change
-
-
-function deleteChildren(e) {
-    var child = e.lastElementChild;
-    while (child!==null) {
-        e.removeChild(child);
-        child = e.lastElementChild;
-    }
-}
 
 
 
@@ -381,12 +380,12 @@ function deleteChildren(e) {
 // Script Initiation
 
 let memoreyes = new Memoreyes();
-let cards1 = createRandomCards(15, new Deck("Test Deck - 1"));
-let cards2 = createRandomCards(25, new Deck("Test Deck - 2"));
-cards1.randomize("unreviewedCards");
-cards2.randomize("unreviewedCards");
-memoreyes.addDeck(cards1);
-memoreyes.addDeck(cards2);
+let card1  = new Deck("Test Deck - 1").createRandomCards(8);
+console.log(card1.createRandomCards(14));
+let card2  = new Deck("Test Deck - 2").createRandomCards(14);
 
+memoreyes.addDeck(card1);
+memoreyes.addDeck(card2);
 
+memoreyes.selectDeck(0);
 memoreyes.domPopulateDecksInNavBar();

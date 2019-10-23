@@ -1,12 +1,10 @@
 .sidenav {
   width: 40%;
-  padding: 15px;
   transition: all 0.5s ease;
   position: relative;
   z-index: 1;
   text-align: center;
   overflow: scroll;
-  border-left: 1px solid black;
 }
 
 .sidenav-hide {

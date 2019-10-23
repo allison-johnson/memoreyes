@@ -39,7 +39,7 @@ body {
 }
 .content-sidebar {
   min-width: 135px;
-  border: 1px black solid;
+  box-shadow: 1px 2px 5px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -74,7 +74,7 @@ body {
 }
 
 .content{
-  border: 1px black solid;
+  transform-style: preserve-3d;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 2fr 1fr 1fr;
@@ -85,14 +85,52 @@ body {
 
 .flashcard {
   grid-area: 1 / 1 / 2 / 3;
-  background-color: lightyellow;
-  box-shadow: 1px 2px 25px;
-  padding: 2px;
+}
+
+.flipped-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+/* Position the front and back side */
+.flashcard-front, .flashcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.center-element{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flashcard-front {
   border-radius: 15px;
+  background-color: limegreen;
+  color: black;
+}
+
+/* Style the back side */
+.flashcard-back {
+  border-radius: 15px;
+  background-color: dodgerblue;
+  color: white;
+  transform: rotateY(180deg);
 }
 
 
-.flashcard-flip {
+
+.flashcard-flip-button {
   border-radius: 10px;
   color: lightblue;
   box-shadow: 1px 2px 25px;
@@ -138,7 +176,23 @@ header {
   flex-direction: row;
   justify-content: flex-start;
   align-items: stretch;
-  border: 1px black solid;
+
+}
+
+.flipper{
+  transition: 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.flip-front{
+  transition: all 0.2s ease;
+  transform: rotateY(180deg);
+}
+
+.flip-back{
+  transition: all 0.2s ease;
+  transform: rotateY(180deg);
 }
 
 main {
