@@ -100,6 +100,7 @@ body {
   transition: all 0.5s ease;
 }
 
+
 .content{
   transform-style: preserve-3d;
   display: grid;
@@ -109,9 +110,19 @@ body {
   padding: 5px 25px;
   width: 80%;
 }
+.content:focus {
+    outline-width: 0;
+}
 
 .flashcard {
   grid-area: 1 / 1 / 2 / 3;
+  transition: all 0.5s ease;
+}
+.flashcard-out {
+  transform: translateX(calc(100vw));
+}
+.flashcard-in {
+  transform: translateX(calc(-100vw));
 }
 
 .flipped-card-inner {
@@ -232,4 +243,12 @@ footer {
   justify-content: space-around;
   align-items: center;
 
+}
+
+
+.notransition {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
 }

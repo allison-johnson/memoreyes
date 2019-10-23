@@ -90,6 +90,13 @@ class Deck {
     return this;
   }
 
+  createDeckFromArray(arr){
+    for(let i = 0; i < arr.length; i++){
+      let card = new Flashcard(arr[i][0],arr[i][1]);
+      this.unreviewedCards.push(card);
+    }
+  }
+
   resetDecks(){
     this.unreviewedCards.push(... this.passedCards);
     this.unreviewedCards.push(... this.failedCards);
@@ -166,6 +173,19 @@ class Memoreyes {
     this.flipButton.addEventListener("click", this.domFlipCard.bind(this));
     this.knowButton.addEventListener("click", this.knowClick.bind(this));
     this.dontKnowButton.addEventListener("click", this.dontKnowClick.bind(this));
+    this.domContent.addEventListener("keydown",function(evt){
+      let key = String.fromCharCode(evt.keyCode)
+      let knowPressed = key === "K";
+      let dontKnowPressed = key === "D";
+      let spacePressed = key === " ";
+      if(knowPressed){
+        this.knowClick();
+      }else if(dontKnowPressed){
+        this.dontKnowClick();
+      }else if(spacePressed){
+        this.domFlipCard();
+      }
+    }.bind(this))
   }
 
   toggleSidenav(){
@@ -212,7 +232,10 @@ class Memoreyes {
 
   }
 
+
   initializeSelectedDeck(){
+    this.domContent.focus();
+    console.log(this.domContent);
     this.determineCurrentDeck();
     this.domPopulateSidebar();
     this.domPopulateContent();
@@ -288,15 +311,37 @@ class Memoreyes {
 
   }
 
+  transitionOutCard(){
+    let card = document.querySelector(".flashcard");
+    card.classList.add("flashcard-out");
+
+  }
+  transitionInCard(){
+    let flashcard = document.querySelector("#flashcard");
+        flashcard.classList.add("flashcard-in");
+    flashcard.classList.add("notransition");
+    flashcard.classList.remove("flashcard-out");
+    console.log(flashcard.classList);
+    setTimeout(function(){
+      let card = document.querySelector("#flashcard");
+          flashcard.classList.remove("notransition");
+          flashcard.classList.remove("flashcard-in");
+    },200);
+  }
+
   updateNextCard(){
-    this.determineCurrentDeck();
-    this.domPopulateSidebar();
-    let moreCardsInDeck = this.decks[this.selectedDeck][this.selectedDeckType].length > 0;
-    if(moreCardsInDeck){
-      this.domPopulateContent();
-    }else {
-      console.log("The Deck is Empty!");
-    }
+    this.transitionOutCard();
+
+    setTimeout(function(){
+      this.determineCurrentDeck();
+      this.domPopulateSidebar();
+      let moreCardsInDeck = this.decks[this.selectedDeck][this.selectedDeckType].length > 0;
+      if(moreCardsInDeck){
+        this.domPopulateContent();
+      }else {
+        console.log("The Deck is Empty!");
+      }
+    }.bind(this),500)
   }
 
   domPopulateDecksInNavBar(){
@@ -351,15 +396,14 @@ class Memoreyes {
     let deckIsEmpty = deck.length === 0;
     console.log(deck.length);
     if(!deckIsEmpty){
+
+
       this.deleteChildren(flashcard);
       this.domCard = deck[0].getHTML();
       let flashcardEle = document.querySelector("#flashcard");
       this.deleteChildren(flashcardEle);
       flashcardEle.appendChild(this.domCard);
-
-      if(showFront){
-        //card.querySelector(".flashcard-front")
-      }
+      this.transitionInCard();
 
     }else{
       alert("You have completed everything!");
@@ -386,8 +430,9 @@ class Memoreyes {
 // Script Initiation
 
 let memoreyes = new Memoreyes();
-let card1  = new Deck("Things to Remember about Hildi").createRandomCards(8);
-console.log(card1.createRandomCards(14));
+let card1  = new Deck("Things to Remember about Hildi");
+card1.createDeckFromArray(hildiDeck);
+
 let card2  = new Deck("Test Deck - 2").createRandomCards(14);
 
 memoreyes.addDeck(card1);
