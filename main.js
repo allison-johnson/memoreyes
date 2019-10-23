@@ -9,8 +9,6 @@
 
 
 
-
-
 // Class Declarations
 class Flashcard {
   constructor(front,back){
@@ -309,6 +307,14 @@ class Memoreyes {
       let ele = document.createElement("h2");
       ele.classList.add("sidebar-deck-title");
       ele.addEventListener("click",function(){
+        var current = document.getElementsByClassName("title-active");
+        console.log(current);
+        if(current.length > 0){
+          current[0].className = current[0].className.replace(" title-active", "");
+          ele.className += " title-active";
+        }else{
+          ele.className += " title-active";
+        }
         this.selectDeck(index);
       }.bind(this));
 
@@ -380,7 +386,7 @@ class Memoreyes {
 // Script Initiation
 
 let memoreyes = new Memoreyes();
-let card1  = new Deck("Test Deck - 1").createRandomCards(8);
+let card1  = new Deck("Things to Remember about Hildi").createRandomCards(8);
 console.log(card1.createRandomCards(14));
 let card2  = new Deck("Test Deck - 2").createRandomCards(14);
 

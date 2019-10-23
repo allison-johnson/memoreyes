@@ -2,7 +2,7 @@
   width: 40%;
   transition: all 0.5s ease;
   position: relative;
-  z-index: 1;
+  z-index: 2;
   text-align: center;
   overflow: scroll;
 }
