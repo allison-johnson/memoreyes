@@ -72,14 +72,48 @@ class Deck {
     }
     this[arrayName] = shuffledDeck;
   }
+  resetDecks(){
+    this.unreviewedCards.push(... this.passedCards);
+    this.unreviewedCards.push(... this.failedCards);
+    this.passedCards = [];
+    this.failedCards = [];
+    this.randomize('unreviewedCards');
+  }
   moveCardFromUnreviewToPassed(index){
-    this.passedCards.push(this.unreviewedCards.pop());
+    let unreviewedIsNotEmpty = this.unreviewedCards.length > 0;
+    if(unreviewedIsNotEmpty){
+      this.passedCards.push(this.unreviewedCards.splice(0,1)[0]);
+    }else{
+      console.log("Array is Empty");
+    }
+
   }
   moveCardFromUnreviewToFailed(index){
-    this.failedCards.push(this.unreviewedCards.pop());
+    let unreviewedIsNotEmpty = this.unreviewedCards.length > 0;
+    if(unreviewedIsNotEmpty){
+      this.failedCards.push(this.unreviewedCards.splice(0,1)[0]);
+    }else{
+      console.log("Array is Empty");
+    }
+
   }
   moveCardFromFailedToPassed(index){
-    this.passedCards.push(this.failedCards.pop());
+    let failedIsNotEmpty = this.failedCards.length > 0;
+    if(failedIsNotEmpty){
+      this.passedCards.push(this.failedCards.splice(0,1)[0]);
+    }else{
+      console.log("Array is Empty");
+    }
+
+  }
+  moveCardFromFailedToFailed(index){
+    let failedIsNotEmpty = this.failedCards.length > 0;
+    if(failedIsNotEmpty){
+      this.failedCards.push(this.failedCards.splice(0,1)[0]);
+    }else{
+      console.log("Array is Empty");
+    }
+
   }
 
 }
@@ -89,6 +123,7 @@ class Memoreyes {
   constructor(){
     this.decks = [];
     this.selectedDeck = null;
+    this.selectedDeckType = null;
     this.currentFlashcardBack = null;
     this.currentFlashcardFront = null;
     this.selectedCardIndex = null;
@@ -101,10 +136,14 @@ class Memoreyes {
     this.domFlashcard = document.querySelector("#flashcard");
     this.domContent = document.querySelector(".content");
     this.sidebar = document.querySelector(".content-sidebar");
+    this.knowButton = document.querySelector(".flashcard-know")
+    this.dontKnowButton = document.querySelector(".flashcard-dont-know");
 
     //Add Event Listeners
     this.menu.addEventListener("click", toggleSidenav);
     this.flipButton.addEventListener("click", this.domFlipCard.bind(this));
+    this.knowButton.addEventListener("click", this.knowClick.bind(this));
+    this.dontKnowButton.addEventListener("click", this.dontKnowClick.bind(this));
   }
 
   addDeck(deck){
@@ -145,15 +184,36 @@ class Memoreyes {
   }
 
   initializeSelectedDeck(){
-
+    this.determineCurrentDeck();
     this.domPopulateSidebar();
     this.domPopulateContent(0);
+  }
+
+  determineCurrentDeck(){
+    console.log(this.decks[this.selectedDeck]);
+    let unreviewedIsEmpty = this.decks[this.selectedDeck].unreviewedCards.length === 0;
+    let failedIsEmpty = this.decks[this.selectedDeck].failedCards.length === 0;
+    if(!unreviewedIsEmpty){
+      this.selectedDeckType = "unreviewedCards";
+      return this.selectedDeckType;
+    }else if(unreviewedIsEmpty && !failedIsEmpty){
+      this.selectedDeckType = "failedCards";
+      return this.selectedDeckType;
+    }else {
+      console.log("You have no cards to review");
+      //this.selectedDeckType = "passedCards";
+      //return this.selectedDeckType;
+    }
+  }
+
+  getCurrentDeck(){
+    return this.decks[this.selectedDeck][this.selectedDeckType];
   }
 
   getSelectedDeck(){
     let deckSelected = this.selectedDeck !== null;
     if(deckSelected){
-      return this.decks[this.selectedDeck];
+      return this.decks[this.selectedDeck][this.selectedDeckType];
     }
   }
 
@@ -162,7 +222,6 @@ class Memoreyes {
     let domFlashcard = document.querySelector("#flashcard");
     domContent.removeChild(domFlashcard);
     let frontDisplayed = this.selectedCardFace === "front";
-    console.log(this.currentFlashcardFront);
     if(frontDisplayed){
       domContent.prepend(this.currentFlashcardBack);
       this.selectedCardFace = "back";
@@ -173,11 +232,52 @@ class Memoreyes {
     }
   }
 
-  nextFlashCard(){}
 
-  previousFlashCard(){
+  dontKnowClick(){
+    let index = this.selectedCardIndex;
+    let deck = this.decks[this.selectedDeck];
+    let deckIsUnreviewed = this.selectedDeckType === "unreviewedCards";
+    let deckIsFailed = this.selectedDeckType === "failedCards";
+    if(deckIsUnreviewed){
+      deck.moveCardFromUnreviewToFailed(index);
+      this.updateNextCard();
+    }else if(deckIsFailed){
+      deck.moveCardFromFailedToFailed(index);
+      this.updateNextCard();
+    }else{
+      console.log("You have finished reviewing your cards!");
+    }
+  }
+
+  knowClick(){
+    let index = this.selectedCardIndex;
+    let deck = this.decks[this.selectedDeck];
+    let deckIsUnreviewed = this.selectedDeckType === "unreviewedCards";
+    let deckIsFailed = this.selectedDeckType === "failedCards";
+    if(deckIsUnreviewed){
+      deck.moveCardFromUnreviewToPassed(index);
+      this.updateNextCard();
+    }else if(deckIsFailed){
+      deck.moveCardFromFailedToPassed(index);
+      this.updateNextCard();
+    }else{
+      console.log("You have finished reviewing your cards!");
+    }
 
   }
+
+  updateNextCard(){
+    this.determineCurrentDeck();
+    this.domPopulateSidebar();
+    let moreCardsInDeck = this.decks[this.selectedDeck][this.selectedDeckType].length > 0;
+    if(moreCardsInDeck){
+      let index = this.selectedCardIndex + 1;
+      this.domPopulateContent(index);
+    }else {
+      console.log("The Deck is Empty!");
+    }
+  }
+
 
   domPopulateDecksInNavBar(){
     let deckList = document.querySelector('#flashcard-decks');
@@ -204,6 +304,7 @@ class Memoreyes {
     let unreview = document.createElement("h4");
     let passed = document.createElement("h4");
     let failed = document.createElement("h4");
+
     unreview.innerText = `Unreviewed: ${deck.unreviewedCards.length}`;
     passed.innerText = `Passed: ${deck.passedCards.length}`;
     failed.innerText = `Failed: ${deck.failedCards.length}`;
@@ -213,16 +314,25 @@ class Memoreyes {
 
   }
 
-  domPopulateContent(index, showFront){
-    this.selectedCardIndex = index;
-    let deck = this.getSelectedDeck();
+  domPopulateContent(index, showFront=true){
+    console.log("Updating Card");
+    //this.selectedCardIndex = index;
+    let deck = this.getCurrentDeck();
     let flashcard = document.querySelector("#flashcard");
-    this.domContent.removeChild(flashcard);
-    this.currentFlashcardFront = deck.unreviewedCards[index].getFrontHTML();
-    this.currentFlashcardBack = deck.unreviewedCards[index].getBackHTML();
-    console.log(this.currentFlashcardFront);
-    this.domContent.prepend(this.currentFlashcardFront);
-    this.selectedCardFace = "front";
+    let domContent = document.querySelector(".content");
+    let deckIsEmpty = deck.length === 0;
+    console.log(deck.length);
+    if(!deckIsEmpty){
+      domContent.removeChild(flashcard);
+      this.currentFlashcardFront = deck[0].getFrontHTML();
+      this.currentFlashcardBack = deck[0].getBackHTML();
+
+      this.domContent.prepend(this.currentFlashcardFront);
+      this.selectedCardFace = "front";
+    }else{
+      console.log("The Deck is Empty, switch to a deck that isn't");
+    }
+
   }
 
 
@@ -273,7 +383,8 @@ function deleteChildren(e) {
 let memoreyes = new Memoreyes();
 let cards1 = createRandomCards(15, new Deck("Test Deck - 1"));
 let cards2 = createRandomCards(25, new Deck("Test Deck - 2"));
-
+cards1.randomize("unreviewedCards");
+cards2.randomize("unreviewedCards");
 memoreyes.addDeck(cards1);
 memoreyes.addDeck(cards2);
 
