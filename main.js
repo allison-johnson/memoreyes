@@ -11,10 +11,12 @@
 
 // Class Declarations
 class Flashcard {
-  constructor(front,back){
+  constructor(front,back, imgPathFront = null, imgPathBack=null){
     this.front = front;
     this.back = back;
     this.passed = false;
+    this.imgPathFront = imgPathFront;
+    this.imgPathBack = imgPathBack;
   }
   getFrontHTML(){
 
@@ -36,13 +38,24 @@ class Flashcard {
     this.frontText = document.createElement("h1");
     this.frontText.classList.add("center-element");
     this.frontText.innerText = this.front;
-    this.frontEle.appendChild(this.frontText);
 
+    this.frontEle.appendChild(this.frontText);
+    if(this.imgPathFront!==null){
+      let img = document.createElement("div");
+      img.classList.add("flashcard-img");
+      img.style.backgroundImage = `url("${this.imgPathFront}")`;
+      this.frontEle.appendChild(img);
+    }
     this.backText = document.createElement("h1");
     this.backText.classList.add("center-element");
     this.backText.innerText = this.back;
     this.backEle.appendChild(this.backText);
-
+    if(this.imgPathBack!==null){
+      let img = document.createElement("div");
+      img.classList.add("flashcard-img");
+      img.style.backgroundImage = `url("${this.imgPathBack}")`;
+      this.backEle.appendChild(img);
+    }
     div.appendChild(this.frontEle);
     div.appendChild(this.backEle);
     this.ele = div;
@@ -92,7 +105,7 @@ class Deck {
 
   createDeckFromArray(arr){
     for(let i = 0; i < arr.length; i++){
-      let card = new Flashcard(arr[i][0],arr[i][1]);
+      let card = new Flashcard(arr[i][0],arr[i][1],arr[i][2],arr[i][3]);
       this.unreviewedCards.push(card);
     }
   }
@@ -326,7 +339,7 @@ class Memoreyes {
       let card = document.querySelector("#flashcard");
           flashcard.classList.remove("notransition");
           flashcard.classList.remove("flashcard-in");
-    },200);
+    },50);
   }
 
   updateNextCard(){

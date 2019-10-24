@@ -125,6 +125,16 @@ body {
   transform: translateX(calc(-100vw));
 }
 
+.flashcard-img{
+  overflow: scroll;
+  margin: 25px;
+  height:500px;
+  width: 400px;
+  background-position: center;
+  background-size:cover;
+  image-orientation: 0deg;
+}
+
 .flipped-card-inner {
   transform: rotateY(180deg);
 }
@@ -147,8 +157,9 @@ body {
 
 .center-element{
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  padding: 10px;
 }
 
 /* Style the front side (fallback if image is missing) */
