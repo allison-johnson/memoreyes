@@ -106,9 +106,9 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 2fr 1fr 1fr;
-  grid-gap: 5px;
-  padding: 5px 25px;
-  width: 80%;
+  grid-gap: 15px;
+  padding: 25px 25px;
+  width: 100%;
 }
 .content:focus {
     outline-width: 0;
@@ -126,13 +126,15 @@ body {
 }
 
 .flashcard-img{
-  overflow: scroll;
-  margin: 25px;
-  height:500px;
-  width: 400px;
-  background-position: center;
-  background-size:cover;
-  image-orientation: 0deg;
+  width: 100%;
+height: auto;
+  object-fit: contain;
+  padding: 25px;
+
+}
+
+.nodisplay {
+  display:none;
 }
 
 .flipped-card-inner {

@@ -24,7 +24,33 @@ class Flashcard {
   getBackHTML(){
 
   }
+  getImgDimensions(img){
+    //img.onload = function() {
+
+      img.classList.add("nodisplay");
+      let flashcard = document.querySelector(".flashcard");
+      let maxHeight = flashcard.clientHeight;
+      let maxWidth = flashcard.clientWidth / 2;
+      let imgHeight = img.height;
+      let imgWidth = img.width;
+
+      let moreTallThanWide = imgHeight >= imgWidth;
+      if(moreTallThanWide){
+        img.style.height = maxHeight+`px`;
+        img.style.width = maxWidth+`px`;
+       img.classList.remove("nodisplay");
+      }else{
+        img.style.height = maxHeight+`px`;
+        img.style.width = maxWidth+`px`;
+      img.classList.remove("nodisplay");
+      }
+
+    //}
+    return img;
+  }
   getHTML(){
+    let flashcard = document.querySelector(".flashcard");
+    console.log(flashcard.clientHeight);
     let div = document.createElement("div");
     div.classList.add("flashcard-inner");
 
@@ -38,23 +64,33 @@ class Flashcard {
     this.frontText = document.createElement("h1");
     this.frontText.classList.add("center-element");
     this.frontText.innerText = this.front;
-
-    this.frontEle.appendChild(this.frontText);
-    if(this.imgPathFront!==null){
-      let img = document.createElement("div");
-      img.classList.add("flashcard-img");
-      img.style.backgroundImage = `url("${this.imgPathFront}")`;
-      this.frontEle.appendChild(img);
-    }
     this.backText = document.createElement("h1");
     this.backText.classList.add("center-element");
     this.backText.innerText = this.back;
+    this.frontEle.appendChild(this.frontText);
     this.backEle.appendChild(this.backText);
-    if(this.imgPathBack!==null){
-      let img = document.createElement("div");
+
+    if(this.imgPathFront!==null){
+
+      let img = document.createElement("img");
       img.classList.add("flashcard-img");
-      img.style.backgroundImage = `url("${this.imgPathBack}")`;
+      img.src = this.imgPathFront;
+      img = this.getImgDimensions(img);
+      this.frontEle.appendChild(img);
+      window.addEventListener("resize",function(){
+        this.getImgDimensions(img);
+      }.bind(this, img))
+
+  }
+    if(this.imgPathBack!==null){
+      let img = document.createElement("img");
+      img.classList.add("flashcard-img");
+      img.src = this.imgPathBack;
+      img = this.getImgDimensions(img);
       this.backEle.appendChild(img);
+      window.addEventListener("resize",function(){
+        this.getImgDimensions(img);
+      }.bind(this, img))
     }
     div.appendChild(this.frontEle);
     div.appendChild(this.backEle);
@@ -327,12 +363,17 @@ class Memoreyes {
   transitionOutCard(){
     let card = document.querySelector(".flashcard");
     card.classList.add("flashcard-out");
+    let lastCard = this.getSelectedDeck().length === 0;
+    if(lastCard){
+      card.classList.add("nodisplay");
+    }
 
   }
   transitionInCard(){
     let flashcard = document.querySelector("#flashcard");
         flashcard.classList.add("flashcard-in");
     flashcard.classList.add("notransition");
+    flashcard.classList.remove("nodisplay");
     flashcard.classList.remove("flashcard-out");
     console.log(flashcard.classList);
     setTimeout(function(){
@@ -401,11 +442,13 @@ class Memoreyes {
   }
 
   domPopulateContent(showFront=true){
+
     console.log("Updating Card");
     //this.selectedCardIndex = index;
     let deck = this.getCurrentDeck();
     let flashcard = document.querySelector("#flashcard");
     this.domContent = document.querySelector(".content");
+    this.domContent.focus();
     let deckIsEmpty = deck.length === 0;
     console.log(deck.length);
     if(!deckIsEmpty){
