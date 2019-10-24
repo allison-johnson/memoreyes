@@ -203,7 +203,7 @@ height: auto;
   border-radius: 10px;
   color: lightblue;
   box-shadow: 1px 2px 25px;
-  grid-area: 3 / 2 / 3 / 4;
+  grid-area: 3 / 2 / 3 / 3;
   cursor: pointer;
   font-size: 36px;
 }

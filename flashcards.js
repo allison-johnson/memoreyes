@@ -21,7 +21,7 @@ let hildiDeck = [
     `What is Hildi's official name?`,
     `White Moon Dances With Wolves`,
     null,
-    null
+    `img/white.jpg`
   ],
   [
     `What is the name of the breeder where Hildi was born?`,
