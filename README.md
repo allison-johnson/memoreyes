@@ -1,12 +1,20 @@
 # memoreyes
 Memoreyes is a flashcard Web App!
 
-# Deployment instructions
+# How to Use the App
 
-> `git clone https://github.com/clarknoah/memoreyes.git`
+> [Memoreyes Deployed Page](https://clarknoah.github.io/memoreyes/index.html)
 
+Out of the box, this app starts with the `Things to Remember about Hildi` deck. You can use either the keyboard or the buttons provided in order to flip and to determine whether or not you know/don't know the answer to a flip card.
 
+**Key**
+Flip Card: `spacebar`
+Don't Know Card: `D`
+Know Card: `K`
 
+The App will iterated through the unreviewed cards until there is nothing left. Then it will cycle through all of cards you missed. When the sidenav is open, a tracker is provided to inform you of what cards you have yet to review/passed/failed, as well as a Key for keyboard inputs (for you highspeed typers!).
+
+## How the Code Works
 The App works right out of the box, and relies on the `Memoreyes` class in order to run properly.
 
 
@@ -54,7 +62,7 @@ memoreyes.domPopulateDecksInNavBar();
 ```
 
 
-# Deck Format
+## Deck Format
 In order to create your own deck, use the following model:
 
 ```Javascript
@@ -64,6 +72,8 @@ let importDeck = [
     `text to be displayed on back of flashcard`,//required
     `relative url (from index.html root) for front image`//optional
     `relative url (from index.html root) for back imnage`//optional
-  [],
+  [
+    //REPEAT ABOVE
+  ],
 ];
 ```
