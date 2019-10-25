@@ -1,20 +1,20 @@
 let hildiDeck = [
   [
     `What is Hildi's favorite chew toy?`,
-    `Bully Sticks`,
+    `Sticks`,
     `img/cage.jpg`,
     `img/sticks.jpg`
   ],
   [
     `What year was Hildi born?`,
     `2014`,
-    null,
+    `img/relax.jpg`,
     `img/chill.jpg`
   ],
   [
     `What is Hildi's favorite color?`,
     `Sea Green`,
-    null,
+    `img/420.jpg`,
     `img/seagreen.png`
   ],
   [
@@ -26,32 +26,32 @@ let hildiDeck = [
   [
     `What is the name of the breeder where Hildi was born?`,
     `Dances With Wolves Ranch`,
-    null,
+    `img/love.jpg`,
     null
   ],
   [
     `What does Hildi most commonly dream she is?`,
     `SpiderHildi`,
-    null,
+    `img/bathrobe.jpg`,
     `img/monster.jpg`
   ],
   [
     `What is Hildi's favorite way to lay down?`,
     `On her back`,
-    null,
+    `img/puppy.jpg`,
     `img/lay.jpg`
   ],
   [
     `Who is Hildi's best friend?`,
     `Stella`,
-    null,
+    `img/lick.jpg`,
     `img/playing.jpg`
   ],
   [
-    `What State was Hildi born in?`,
-    `California`,
+    `What is Hildi's least favorite thing?`,
+    `Cones`,
     null,
-    null
+    `cones.jpg`
   ],
   [
     `What face did Hildi make when she was caught chewing up the Ottoman?`,
@@ -63,6 +63,6 @@ let hildiDeck = [
     `What is Hildi thinking about right now?`,
     `Food`,
     null,
-    null
+    `img/bully.jpg`
   ],
 ];

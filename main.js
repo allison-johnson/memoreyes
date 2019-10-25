@@ -62,10 +62,10 @@ class Flashcard {
     this.backEle.classList.add("center-element");
 
     this.frontText = document.createElement("h1");
-    this.frontText.classList.add("center-element");
+    this.frontText.classList.add("center-element","media-flashcard");
     this.frontText.innerText = this.front;
     this.backText = document.createElement("h1");
-    this.backText.classList.add("center-element");
+    this.backText.classList.add("center-element","media-flashcard");
     this.backText.innerText = this.back;
     this.frontEle.appendChild(this.frontText);
     this.backEle.appendChild(this.backText);
@@ -144,6 +144,7 @@ class Deck {
       let card = new Flashcard(arr[i][0],arr[i][1],arr[i][2],arr[i][3]);
       this.unreviewedCards.push(card);
     }
+    return this;
   }
 
   resetDecks(){
@@ -369,6 +370,7 @@ class Memoreyes {
     }
 
   }
+
   transitionInCard(){
     let flashcard = document.querySelector("#flashcard");
         flashcard.classList.add("flashcard-in");
@@ -489,10 +491,10 @@ let memoreyes = new Memoreyes();
 let card1  = new Deck("Things to Remember about Hildi");
 card1.createDeckFromArray(hildiDeck);
 
-let card2  = new Deck("Test Deck - 2").createRandomCards(14);
+let card2  = new Deck("Test Deck - asdfgasdf").createRandomCards(14);
 
 memoreyes.addDeck(card1);
 memoreyes.addDeck(card2);
 
-memoreyes.selectDeck(0);
+//memoreyes.selectDeck(0);
 memoreyes.domPopulateDecksInNavBar();
